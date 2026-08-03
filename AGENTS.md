@@ -8,8 +8,6 @@ Target browser: latest Google Chrome.
 
 ## Commands
 
-- Dev server: `npm run dev` (runs on default Vite port)
-- Build: `npm run build` (TypeScript compilation + Vite build)
 - Lint: `npm run lint` (ESLint with TypeScript rules)
 - Type check: `npx tsc --noEmit`
 
