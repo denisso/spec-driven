@@ -1,64 +1,113 @@
-- **Epic 1: API Infrastructure and Shared UI Components**  
-  *As a developer, I want to establish a solid foundation for communicating with DummyJSON and reuse common UI elements, so that all features work consistently with minimal duplication.*
+## Epic 1: Authentication and Session Management
 
-  - **Feature 1.1: HTTP Client**  
-    - **User Story 1.1.1:** As a developer, I want a universal HTTP client with a base URL for DummyJSON, so that all API calls are centralised and easily configurable.  
-    - **User Story 1.1.2:** As a developer, I want the HTTP client to automatically attach the authentication token (if present) to every request, so that I don't have to manually add it each time.  
-    - **User Story 1.1.3:** As a developer, I want the HTTP client to support query parameters (for sorting, searching, pagination) so that I can pass complex filters easily.
+### Feature 1.1: User Authentication
 
-  - **Feature 1.2: Global Error Handling**  
-    - **User Story 1.2.1:** As a user, I want to see a user-friendly notification when an API error occurs (e.g., network failure or server error), so that I understand what went wrong.  
-    - **User Story 1.2.2:** As a developer, I want a single interceptor that processes all HTTP errors and transforms them into a standard format, so that error handling is uniform across the app.
+#### User Story 1.1.1: Login form with field validation
+As an unauthenticated user, I want to see a login form with "Username" and "Password" fields so that I can enter my credentials.
 
-  - **Feature 1.3: Reusable UI Components**  
-    - **User Story 1.3.1:** As a user, I want to see a loading indicator (progress bar or spinner) whenever data is being fetched, so that I know the app is working.  
-    - **User Story 1.3.2:** As a user, I want to receive a toast notification for success (e.g., product added) or error events, so that I get clear feedback on my actions.
+**Acceptance Criteria:**
+- The form contains input fields for username and password.
+- Fields are required (validation for empty values).
+- A submit button is present.
+- The layout matches the Figma design.
+
+#### User Story 1.1.2: Display errors on failed login attempt
+As a user, I want to receive error messages on failed login attempts so that I understand the reason for rejection.
+
+**Acceptance Criteria:**
+- On API error (e.g., invalid credentials), a notification or error message is shown below the relevant field.
+- Validation errors (empty fields) are displayed below the fields before submission or after an attempt.
+
+#### User Story 1.1.3: Session persistence with "Remember me" checkbox
+As a user, I want to keep my session when the "Remember me" checkbox is checked so that I don't have to re-enter credentials after closing the browser.
+
+**Acceptance Criteria:**
+- When the checkbox is checked, the token is stored in localStorage.
+- When unchecked, the token is stored in sessionStorage.
+- After login, the user is redirected to the product list page.
+
+#### User Story 1.1.4: "Create" link as a placeholder
+As a user, I want to see a "Create" link on the login form (placeholder) to understand that registration may be available in the future.
+
+**Acceptance Criteria:**
+- The "Create" link is displayed but does not navigate anywhere (no logic for redirection).
 
 ---
 
-- **Epic 2: Authentication and Session Management**  
-  *As a user, I want to log in securely and have my session remembered according to my preference, so that I can access protected content without re-entering credentials every time.*
+## Epic 2: Product Management (Catalog)
 
-  - **Feature 2.1: Login Form**  
-    - **User Story 2.1.1:** As a user, I want to enter my username/email and password, with required field validation, so that I cannot submit empty or malformed credentials.  
-    - **User Story 2.1.2:** As a user, I want to see clear error messages under the respective fields (or as a notification) when authentication fails, so that I can correct my input.  
-    - **User Story 2.1.3:** As a user, I want the "Create" link to be a visual placeholder that does nothing, so that I understand it is not functional yet.
+### Feature 2.1: Product List View
 
-  - **Feature 2.2: Session Persistence**  
-    - **User Story 2.2.1:** As a user, I want to check a "Remember me" box to keep my session active even after closing the browser (using localStorage), so that I don't have to log in repeatedly.  
-    - **User Story 2.2.2:** As a user, I want the session to expire when I close the browser tab if I do **not** check the box (using sessionStorage), so that my account stays secure on shared devices.
+#### User Story 2.1.1: Display product table
+As an authenticated user, I want to see a product table with columns (Name, Price, Vendor, SKU, Rating) so that I can browse the catalog.
 
-  - **Feature 2.3: Protected Routes and Logout**  
-    - **User Story 2.3.1:** As a user, I want to be automatically redirected to the login page if I try to access the product list without being authenticated, so that I know I need to log in first.  
-    - **User Story 2.3.2:** As a user, I want a logout option that clears my token and redirects me to the login page, so that I can end my session safely.
+**Acceptance Criteria:**
+- Data is loaded from the DummyJSON API (Products).
+- Columns match the Figma design.
+- A progress bar is shown while loading data.
 
----
+#### User Story 2.1.2: Loading indicator (progress bar)
+As a user, I want to see a loading indicator (progress bar) while data is being fetched so that I know the process is ongoing.
 
-- **Epic 3: Product Management (Listing, Sorting, Search, Local Addition)**  
-  *As a user, I want to view, sort, search, and add products so that I can manage the product catalogue conveniently.*
+**Acceptance Criteria:**
+- The progress bar appears during API requests.
+- After loading completes, the progress bar disappears.
 
-  - **Feature 3.1: Product Table with Loading**  
-    - **User Story 3.1.1:** As a user, I want to see a table of products with columns (Name, Price, Vendor, SKU, Rating, Actions) matching the Figma design, so that I can browse all items.  
-    - **User Story 3.1.2:** As a user, I want to see a progress bar while the product list is being loaded, so that I know the data is in transit.  
-    - **User Story 3.1.3:** As a user, I want the product list to be automatically fetched from the DummyJSON API on page load, so that I always see up‑to‑date data.
+#### User Story 2.1.3: Highlight products with low rating (< 3.5)
+As a user, I want to see products with a rating < 3.5 highlighted in red so that I can quickly spot low-quality items.
 
-  - **Feature 3.2: Sorting**  
-    - **User Story 3.2.1:** As a user, I want to sort the table by price and rating, both ascending and descending, by clicking on column headers, so that I can quickly find the cheapest or highest‑rated products.  
-    - **User Story 3.2.2:** As a user, I want the current sorting state (column and direction) to persist across page reloads (e.g., via localStorage), so that I don't lose my preferred view.  
-    - **User Story 3.2.3:** As a user, I want to see visual indicators (arrows or highlighting) on the sorted column, so that I know which column is currently sorted and in which order.  
-    - **User Story 3.2.4:** As a user, I want the options from the "three‑dots" icon to include "Refresh table" and "Sort ascending/descending", so that I can control the table in one place.
+**Acceptance Criteria:**
+- Each row's rating is checked.
+- If the rating is < 3.5, the rating value or the entire row is highlighted in red (per design).
 
-  - **Feature 3.3: Search**  
-    - **User Story 3.3.1:** As a user, I want to type a product name in a search field and have the results updated via the DummyJSON search API, so that I can find specific items quickly.  
-    - **User Story 3.3.2:** As a user, I want the search to be triggered with a debounce delay (to avoid excessive requests), so that the app remains responsive and does not overload the server.
+### Feature 2.2: Product Sorting
 
-  - **Feature 3.4: Local Product Addition**  
-    - **User Story 3.4.1:** As a user, I want to click an "Add" button that opens a modal/form with fields (Name, Price, Vendor, SKU), so that I can enter details for a new product.  
-    - **User Story 3.4.2:** As a user, I want the form to validate required fields and price format, so that I cannot add incomplete or invalid data.  
-    - **User Story 3.4.3:** As a user, I want the new product to be added locally to the table (without calling the API), so that I can see it immediately.  
-    - **User Story 3.4.4:** As a user, I want a toast notification saying "Product added" after successful local addition, so that I get clear confirmation.
+#### User Story 2.2.1: Sort by columns (price, rating, etc.)
+As a user, I want to sort products by columns (e.g., price or rating) so that I can order data conveniently.
 
-  - **Feature 3.5: UI Enhancements and Visual Feedback**  
-    - **User Story 3.5.1:** As a user, I want product ratings below 3.5 to be highlighted in red, so that I can easily spot low‑rated items.  
-    - **User Story 3.5.2:** As a user, I want a refresh action (from the "three‑dots" menu) that reloads the current table data, so that I can get the latest information without refreshing the whole page.
+**Acceptance Criteria:**
+- Sorting is available for columns: Price, Rating (and others if specified in the design).
+- Clicking a column header toggles sorting (ascending/descending).
 
+#### User Story 2.2.2: Persist sorting state
+As a user, I want the sorting state to persist after page reload so that I don't have to reconfigure it.
+
+**Acceptance Criteria:**
+- Sorting state (column, direction) is stored in URL parameters or localStorage.
+- On page reload, the saved state is applied.
+
+#### User Story 2.2.3: Three-dot menu (refresh and quick sort)
+As a user, I want to use the three-dot menu to refresh the table and apply quick sorting so that I can manage data display.
+
+**Acceptance Criteria:**
+- The three-dot icon opens a dropdown menu.
+- A "Refresh" option reloads table data.
+- "Sort ascending/descending" options apply sorting to the active column (or the first column by default).
+
+### Feature 2.3: Add New Product (Local)
+
+#### User Story 2.3.1: Open add product form
+As a user, I want to open the add product form via the "Add" button so that I can enter details for a new product.
+
+**Acceptance Criteria:**
+- Clicking "Add" opens a modal or a separate form.
+- Form fields: Name, Price, Vendor, SKU.
+
+#### User Story 2.3.2: Local addition without saving to API
+As a user, I want to add a product locally (without saving to the server) so that I can see it in the table immediately.
+
+**Acceptance Criteria:**
+- After filling and submitting the form, the product is added to the state (Zustand) and displayed in the table.
+- No API request is made for saving.
+- A basic Toast notification appears on successful addition.
+
+### Feature 2.4: Product Search
+
+#### User Story 2.4.1: Search via API by name
+As a user, I want to search for products by name through the API so that I can quickly find the desired product.
+
+**Acceptance Criteria:**
+- A search field is present on the product list page.
+- Search is implemented via the DummyJSON API (query parameter).
+- Search results are displayed in the table.
+- A loading state (progress bar) is shown during the search request.
